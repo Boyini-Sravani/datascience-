@@ -1,11 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # ## Mood classfication using CNN (HAPPY / SAD)
 
-# In[1]:
-
-
+# importing the necessary libraries 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.preprocessing import image 
 import matplotlib.pyplot as plt
@@ -14,47 +9,17 @@ import numpy as np
 import cv2
 import os
 
-
-# In[6]:
-
-
 img = image.load_img(r"C:\Users\srava\Downloads\portrait-photo-japanese-infant-female-curly-hair-smiling_662214-130852.jpg")
-
-
-# In[7]:
-
-
 plt.imshow(img)
 
-
-# In[12]:
-
-
 i1 = cv2.imread(r"C:\Users\srava\Downloads\portrait-photo-japanese-infant-female-curly-hair-smiling_662214-130852.jpg")
-
-
-# In[13]:
-
-
 i1
+i1.shape # to know thw sahpe of the image 
 
-
-# In[14]:
-
-
-i1.shape
-
-
-# In[15]:
-
-
+#rescaling the Training and validation Images
 train = ImageDataGenerator(rescale = 1/255)
 validataion = ImageDataGenerator(rescale = 1/255)
-
-
-# In[16]:
-
-
+#loading the Training and validation datset .
 train_dataset = train.flow_from_directory(r"C:\Users\srava\OneDrive\Desktop\CNN -Image classification - Happy face or sad face\Training",
                                          target_size = (200,200),
                                          batch_size = 3,
@@ -63,25 +28,10 @@ validataion_dataset = validataion.flow_from_directory(r"C:\Users\srava\OneDrive\
                                          target_size = (200,200),
                                          batch_size = 3,
                                          class_mode = 'binary')
-
-
-# In[17]:
-
-
 train_dataset.class_indices
-
-
-# In[18]:
-
-
 train_dataset.classes
 
-
-# In[19]:
-
-
-# now we are applying maxpooling 
-
+# Model Building with  maxpooling 
 model = tf.keras.models.Sequential([ tf.keras.layers.Conv2D(16,(3,3),activation = 'relu',input_shape = (200,200,3)),
                                     tf.keras.layers.MaxPool2D(2,2), #3 filtr we applied hear
                                     #
@@ -100,44 +50,26 @@ model = tf.keras.models.Sequential([ tf.keras.layers.Conv2D(16,(3,3),activation 
                                     )
 
 
-# In[21]:
-
-
+#Compilation of the Model 
 model.compile(loss='binary_crossentropy',
               optimizer = tf.keras.optimizers.RMSprop(learning_rate = 0.001),
               metrics = ['accuracy']
               )
-
-
-# In[23]:
-
-
+#Fitting  the model with training data 
 model_fit = model.fit(train_dataset,
                      steps_per_epoch = 3,
                      epochs = 15,
                      validation_data = validataion_dataset)
-
-
-# In[24]:
-
-
+# testing the data 
 dir_path = r"C:\Users\srava\OneDrive\Desktop\CNN -Image classification - Happy face or sad face\Testing"
 for i in os.listdir(dir_path ):
     print(i)
-
-
-# In[25]:
-
 
 dir_path = r"C:\Users\srava\OneDrive\Desktop\CNN -Image classification - Happy face or sad face\Testing"
 for i in os.listdir(dir_path ):
     img = image.load_img(dir_path+ '//'+i, target_size = (200,200))
     plt.imshow(img)
     plt.show()
-
-
-# In[ ]:
-
 
 dir_path = r"C:\Users\srava\OneDrive\Desktop\CNN -Image classification - Happy face or sad face\Testing"
 for i in os.listdir(dir_path ):
@@ -158,12 +90,5 @@ for i in os.listdir(dir_path ):
 
 
 # Conclusion: 
-# 
-# 
 # Model Predicted Exactly with 100 % Accuracy of happy and sad images at epochs 15 and epoch for step = 3 
-
-# In[ ]:
-
-
-------------------------------------------------------------------------------------------------------
 
