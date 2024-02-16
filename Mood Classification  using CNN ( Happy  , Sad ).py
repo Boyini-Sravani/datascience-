@@ -1,5 +1,4 @@
 # ## Mood classfication using CNN (HAPPY / SAD)
-
 # importing the necessary libraries 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.preprocessing import image 
@@ -11,11 +10,9 @@ import os
 
 img = image.load_img(r"C:\Users\srava\Downloads\portrait-photo-japanese-infant-female-curly-hair-smiling_662214-130852.jpg")
 plt.imshow(img)
-
 i1 = cv2.imread(r"C:\Users\srava\Downloads\portrait-photo-japanese-infant-female-curly-hair-smiling_662214-130852.jpg")
 i1
 i1.shape # to know thw sahpe of the image 
-
 #rescaling the Training and validation Images
 train = ImageDataGenerator(rescale = 1/255)
 validataion = ImageDataGenerator(rescale = 1/255)
@@ -30,7 +27,6 @@ validataion_dataset = validataion.flow_from_directory(r"C:\Users\srava\OneDrive\
                                          class_mode = 'binary')
 train_dataset.class_indices
 train_dataset.classes
-
 # Model Building with  maxpooling 
 model = tf.keras.models.Sequential([ tf.keras.layers.Conv2D(16,(3,3),activation = 'relu',input_shape = (200,200,3)),
                                     tf.keras.layers.MaxPool2D(2,2), #3 filtr we applied hear
@@ -48,8 +44,6 @@ model = tf.keras.models.Sequential([ tf.keras.layers.Conv2D(16,(3,3),activation 
                                     tf.keras.layers.Dense(1,activation= 'sigmoid')
                                     ]
                                     )
-
-
 #Compilation of the Model 
 model.compile(loss='binary_crossentropy',
               optimizer = tf.keras.optimizers.RMSprop(learning_rate = 0.001),
@@ -76,8 +70,7 @@ for i in os.listdir(dir_path ):
     img = image.load_img(dir_path+ '//'+i, target_size = (200,200))
     plt.imshow(img)
     plt.show()
-    
-    
+     
     x= image.img_to_array(img)
     x=np.expand_dims(x,axis = 0)
     images = np.vstack([x])
@@ -87,7 +80,6 @@ for i in os.listdir(dir_path ):
         print( 'i am happy')
     else:
         print('i am sad')
-
 
 # Conclusion: 
 # Model Predicted Exactly with 100 % Accuracy of happy and sad images at epochs 15 and epoch for step = 3 
